@@ -1,0 +1,64 @@
+<!-- Exclusive Note (Menggantikan "Siap Bergabung?") -->
+<section class="py-20 px-6 text-center bg-gradient-to-b from-transparent to-black">
+    <div class="container mx-auto max-w-4xl">
+        <i class="bi bi-award text-6xl text-yellow-400 mb-6"></i>
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-6">Anda Sudah di Tempat yang Tepat</h2>
+        <p class="text-xl text-gray-300 leading-relaxed">
+            Halaman ini adalah bentuk apresiasi kami untuk Anda — anggota VIP yang setia. 
+            Terima kasih telah mempercayai Streamé sebagai teman setia menonton Anda. 
+            Kami akan terus memberikan yang terbaik, karena Anda layak mendapatkannya.
+        </p>
+        <div class="mt-10">
+            <img 
+                src="<?= htmlspecialchars($profile_url) ?>" 
+                alt="Foto Anda" 
+                class="w-20 h-20 rounded-full border-4 border-yellow-400 mx-auto shadow-2xl"
+            >
+            <p class="text-yellow-400 font-semibold mt-4">Dengan hangat, <br><span class="text-white"><?= htmlspecialchars($username) ?></span></p>
+        </div>
+    </div>
+</section>
+
+<?php
+// about.php - Tentang Streamé (Khusus Pengguna VIP)
+include 'config.php';
+// session_start();
+
+// 🔐 Hanya untuk pengguna VIP
+if (!isset($_SESSION['user']) || !$_SESSION['user']['is_vip']) {
+    header("Location: pricing.php");
+    exit();
+}
+
+// Ambil data pengguna
+$user = $_SESSION['user'];
+$username = $user['name'];
+$profile_image = $user['profile_image'] ?? null;
+
+// URL foto profil
+$upload_dir = 'uploads/profiles/';
+$profile_url = $profile_image && file_exists($upload_dir . $profile_image)
+    ? $upload_dir . $profile_image
+    : 'https://ui-avatars.com/api/?name=' . urlencode($username) . '&background=FFD700&color=000000&size=128';
+?>
+
+ <!-- Fitur Download -->
+                    <?php if (strpos($current_episode['video_url'], 'youtube') === false && strpos($current_episode['video_url'], 'vimeo') === false): ?>
+                        <div class="mt-8 text-center">
+                            <a href="<?= htmlspecialchars($current_episode['video_url']) ?>" 
+                               download="<?= htmlspecialchars(rawurlencode($series['title'])) ?>_S<?= $current_episode['season'] ?>E<?= $current_episode['episode'] ?>.mp4"
+                               class="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg inline-flex items-center gap-2">
+                                <i class="bi bi-download"></i> Unduh Episode
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                     <!-- Kontrol Bar -->
+                    <div class="bg-red-600 text-white px-4 py-2 flex justify-between items-center mt-4 rounded-lg">
+                        <button onclick="toggleFullscreen()" class="flex items-center gap-1 hover:text-yellow-300">
+                            <i class="bi bi-arrows-fullscreen"></i> FULLSCREEN
+                        </button>
+                        <button class="flex items-center gap-1 hover:text-yellow-300">
+                            <i class="bi bi-chat-square-dots"></i> KOMENTAR
+                        </button>
+                    </div>

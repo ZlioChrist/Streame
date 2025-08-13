@@ -1,0 +1,40 @@
+<!-- Checkout Section -->
+<section class="py-20 px-4 container mx-auto">
+    <div class="text-center mb-12">
+        <h2 data-aos="fade-up"
+            class="text-3xl md:text-4xl font-extrabold text-[#FFD700] mb-4">Pilih Paket Langganan</h2>
+        <p data-aos="fade-up"
+           data-aos-delay="200"
+           class="text-gray-300 max-w-2xl mx-auto">
+            Pilih paket yang sesuai dengan kebutuhanmu dan mulai nikmati konten eksklusif StreamFlix.
+        </p>
+    </div>
+
+    <!-- Grid Paket -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+        <?php foreach ($packages as $pkg): ?>
+            <div data-aos="fade-up"
+                 data-aos-delay="<?= rand(100, 600) ?>"
+                 class="w-full bg-gray-800 glass rounded-xl p-6 shadow-lg card-hover transition-all duration-300">
+                <h3 class="text-xl font-semibold text-[#FFFDD0] mb-2"><?= htmlspecialchars($pkg['name']) ?></h3>
+                <p class="mt-2 text-amber-400 text-xl font-bold">
+                    Rp <?= number_format($pkg['price'], 2, ',', '.') ?>
+                </p>
+                <p class="mt-1 text-sm text-gray-400">
+                    Langganan selama <?= $pkg['duration_days'] ?> hari
+                </p>
+                <ul class="mt-4 space-y-2 text-sm text-gray-300">
+                    <li>✔️ Akses eksklusif</li>
+                    <li>✔️ Tanpa iklan</li>
+                    <li>✔️ Bisa download film</li>
+                </ul>
+                <form method="post" action="process_payment.php" class="mt-6">
+                    <input type="hidden" name="package_id" value="<?= $pkg['id'] ?>">
+                    <button type="submit" class="btn-gold w-full">
+                        Pilih Paket Ini
+                    </button>
+                </form>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</section>
